@@ -1,0 +1,21 @@
+{
+    "name": "Dythervin.Data",
+    "rootNamespace": "Dythervin.Data",
+    "references": [
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:32e9b039423540a9957ce35545630ab5",
+        "GUID:d0fadda6d9d94edca98110f00ae07c4c",
+        "GUID:b11a47de063242e48cced591c7538b96",
+        "GUID:b1a4a8cafa6a5274d8b627054dcdbadf",
+        "GUID:0d2722be3221441990b3d439a49d3d00"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

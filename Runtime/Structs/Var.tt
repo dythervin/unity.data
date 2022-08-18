@@ -1,0 +1,142 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="$(SolutionDir)Library\ScriptAssemblies\Dythervin.SerializedReference.dll" #>
+<#@ assembly name="$(SolutionDir)Library\ScriptAssemblies\Dythervin.Core.Data.dll" #>
+<#@ import namespace="System.Globalization" #>
+<#
+    (string, string, bool)[] types =
+    {
+        ("NumInt", "int", true),
+        ("NumFloat", "float", true),
+        ("Var<T>", "T", false)
+    };
+#>
+using System;
+using System.Runtime.InteropServices;
+using <#= typeof(INumFloat).Namespace #>;
+using Dythervin.SerializedReference.Refs;
+using UnityEngine;
+
+
+namespace Dythervin.Core.Data.Structs
+{
+#if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+#endif
+    <#
+    TextInfo info = CultureInfo.CurrentCulture.TextInfo;
+    foreach (var data in types)
+    {
+        string type = data.Item2;
+        string name = data.Item1;
+        string interfaces = data.Item3 ? $", {nameof(INumFloat)}" : string.Empty;
+        string nameConst;
+        {
+            int index = name.IndexOf('<');
+            nameConst = index > 0 ? name.Remove(index) : name;
+        }
+#>
+
+    [Serializable]
+    [StructLayout(LayoutKind.Auto)]
+    public struct <#= name #> : IVar<<#= type #>><#= interfaces #>
+    {
+        [SerializeField] private bool reference;
+#if ODIN_INSPECTOR
+        [HideIf(nameof(reference))]
+#endif
+        [SerializeField]
+        private <#= type #> value;
+
+#if ODIN_INSPECTOR
+        [ShowIf(nameof(reference))]
+#endif
+        [SerializeField]
+        private Ref<IVar<<#= type #>>> refValue;
+
+        private Action onChanged;
+        public event Action OnChanged
+        {
+            add
+            {
+                if (reference)
+                    refValue.Value.OnChanged += value;
+                else
+                    onChanged += value;
+            }
+
+            remove
+            {
+                if (reference)
+                    refValue.Value.OnChanged -= value;
+                else
+                    onChanged -= value;
+            }
+        }
+#if !UNITY_2021_4_OR_NEWER
+        bool IVarReadOnly.IsConst => false;
+#endif
+
+        public <#= type #> Value
+        {
+            get => reference
+                ? refValue.Value.Value
+                : value;
+            set
+            {
+                if (reference)
+                {
+                    refValue.Value.Value = value;
+                }
+                else
+                {
+                    this.value = value;
+                    onChanged?.Invoke();
+                }
+            }
+        }<#
+        SetInterface(data.Item3);
+#>
+
+        public <#= nameConst #>(<#= type #> value)
+        {
+            reference = false;
+            this.value = value;
+            refValue = default;
+            onChanged = null;
+        }
+
+        public <#= nameConst #>(IVar<<#= type #>> value)
+        {
+            reference = true;
+            this.value = default;
+            refValue = new Ref<IVar<<#= type #>>>(value);
+            onChanged = null;
+        }
+
+        public static implicit operator <#= type #>(in <#= name #> value)
+        {
+            return value.Value;
+        }
+
+        public static implicit operator <#= name #>(<#= type #> value)
+        {
+            return new <#= name #>(value);
+        }
+    }
+
+    <#
+    }
+#>}
+<#+
+    private void SetInterface(bool num)
+    {
+        if (num)
+        {
+#>            
+        float <#= nameof(IVarReadOnly) #><float>.<#= nameof(INumFloat.Value) #> => Value;
+<#+
+        }
+    }
+#>
+
