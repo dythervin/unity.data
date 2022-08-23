@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Dythervin.Data.Objects
 {
-    [CreateAssetMenu(menuName = "Var/Float", order = 0)]
+    [CreateAssetMenu(menuName = MenuName + "Float", order = 0)]
     public class VarFloatSo : VariableSo<float>, INumericVar<float>
     {
         public void Add(float value)

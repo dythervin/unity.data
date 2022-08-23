@@ -13,7 +13,7 @@ namespace Dythervin.Data.Structs
 
         public CurveField()
         {
-            this.TryEnterPlayMode();
+            this.PlayModeSubscribe();
         }
 
         protected override float BaseValue => baseValue.Value;

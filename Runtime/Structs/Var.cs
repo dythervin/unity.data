@@ -10,9 +10,6 @@ using UnityEngine;
 
 namespace Dythervin.Data.Structs
 {
-#if ODIN_INSPECTOR
-#endif
-
     [Serializable]
     [StructLayout(LayoutKind.Auto)]
     public struct NumInt : IVar<int>, INumFloat

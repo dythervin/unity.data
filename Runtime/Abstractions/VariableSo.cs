@@ -14,6 +14,7 @@ namespace Dythervin.Data.Abstractions
     [AssetGroup("VariableSO")]
     public abstract class VariableSo<T> : DataObject, IVar<T>, IPlayModeListener
     {
+        public const string MenuName = "Var/";
         [Space] [SerializeField] private bool persistent;
 
 #if ODIN_INSPECTOR
@@ -97,7 +98,7 @@ namespace Dythervin.Data.Abstractions
         protected override void OnEnable()
         {
             base.OnEnable();
-            this.TryEnterPlayMode();
+            this.PlayModeSubscribe();
         }
     }
 }
