@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "com.unity.mathematics": "1.2.6",
-    "com.dythervin.unity.core": "1.0.0",
-    "com.dythervin.unity.data.persistent": "1.0.0",
-    "com.dythervin.unity.callbacks": "1.0.0",
-    "com.dythervin.unity.asset-identifier": "1.0.0",
-    "com.dythervin.unity.serialized-reference": "1.0.0"
+    "com.dythervin.unity.core": "1.0.1",
+    "com.dythervin.unity.data.persistent": "1.0.1",
+    "com.dythervin.unity.callbacks": "1.0.1",
+    "com.dythervin.unity.asset-identifier": "1.0.1",
+    "com.dythervin.unity.serialized-reference": "1.0.1"
   },
   "displayName": "data"
 }

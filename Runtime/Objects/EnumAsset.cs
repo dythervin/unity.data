@@ -12,20 +12,19 @@ namespace Dythervin.Data.Objects
     [AssetGroup("Enum")]
     public sealed class EnumAsset : DataObject
     {
-#if UNITY_EDITOR
         private enum Type
         {
             Bool,
             Enum
         }
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [OnValueChanged(nameof(OnTypeChanged))]
 #endif
         [SerializeField]
         private Type type;
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [ShowIf(nameof(type), Type.Enum)]
         [ListDrawerSettings(DraggableItems = false)]
 #endif
@@ -71,22 +70,18 @@ namespace Dythervin.Data.Objects
                     break;
             }
         }
-#endif
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         private static readonly ValueDropdownList<byte> Buffer = new ValueDropdownList<byte>();
 
         public ValueDropdownList<byte> Values
         {
             get
             {
-#if UNITY_EDITOR
                 Buffer.Clear();
                 for (byte i = 0; i < values.Count; i++)
                 {
                     Buffer.Add(values[i], i);
                 }
-#endif
-
                 return Buffer;
             }
         }

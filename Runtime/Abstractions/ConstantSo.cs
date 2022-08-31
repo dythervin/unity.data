@@ -30,5 +30,10 @@ namespace Dythervin.Data.Abstractions
             this.value = value;
             this.Dirty();
         }
+
+        public static implicit operator T(ConstantSo<T> obj)
+        {
+            return obj.value;
+        }
     }
 }
