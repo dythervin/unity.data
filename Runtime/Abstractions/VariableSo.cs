@@ -47,7 +47,7 @@ namespace Dythervin.Data.Abstractions
                     return;
 
                 if (persistent)
-                    PersistentValue = value;
+                    _pref.Value = value;
 
                 this.value = value;
                 onChanged.Invoke(value);
@@ -58,11 +58,6 @@ namespace Dythervin.Data.Abstractions
 #if !UNITY_2021_4_OR_NEWER
         bool IVarReadOnly.IsConst=> false;
 #endif
-        protected T PersistentValue
-        {
-            get => _pref;
-            set => _pref.Value = value;
-        }
 
         bool IPlayModeListener.MainThreadOnly => true;
 
@@ -79,15 +74,15 @@ namespace Dythervin.Data.Abstractions
         protected virtual void OnDestroy()
         {
             if (persistent)
-                PersistentValue = value;
+                _pref.Value = value;
         }
 
         protected virtual void OnEnterPlayMode()
         {
             if (persistent)
             {
-                _pref = Prefs.Default.Get<T>($"VariableSo-{Id.ToString()}");
-                value = PersistentValue;
+                _pref = Prefs.Default.Get($"VariableSo-{Id.ToString()}", defaultValue);
+                value = _pref;
             }
             else if (hasDefaultValue)
             {
