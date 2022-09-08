@@ -1,0 +1,69 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="System" #>
+using System;
+
+<#
+    int[] lengths = { 2, 3, 4, 5 };
+#>
+namespace Dythervin.Data.Structs
+{
+<#
+    foreach (int length in lengths)
+    {
+#>
+
+    public struct Array<#= length #><T>
+    {
+<#
+        for (int i = 0; i < length; i++)
+        {
+#>
+        public T item<#=i#>;
+<#
+        }
+#>
+
+        public int Count => <#=length#>;
+
+        public T this[int index]
+        {
+            get
+            {
+                switch(index)
+                {
+
+<#
+        for (int i = 0; i < length; i++)
+        {
+#>
+                    case <#=i#>: return item<#=i#>;
+<#
+        }
+#>
+                    default: throw new ArgumentOutOfRangeException();
+                }
+            }
+            set
+            {                
+                switch(index)
+                {
+
+<#
+        for (int i = 0; i < length; i++)
+        {
+#>
+                    case <#=i#>:
+                        item<#=i#> = value;
+                        break;
+<#
+        }
+#>
+                    default: throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+    }
+<#
+    }
+#>
+}
